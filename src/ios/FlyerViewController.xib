@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FlyerViewController" customModule="Delhaize_Food_Lion_Loyalty_Mobile_App" customModuleProvider="target">
+            <connections>
+                <outlet property="bottomConstraint" destination="INi-wk-Q3h" id="A2N-6q-LpP"/>
+                <outlet property="pickerView" destination="K8R-QX-QFw" id="3pK-zc-yYl"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K8R-QX-QFw" userLabel="PickerView">
+                    <rect key="frame" x="0.0" y="667" width="375" height="215"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a List" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GAB-Lu-4bk">
+                            <rect key="frame" x="22" y="0.0" width="260" height="37"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="37" id="0Uq-W3-CZL"/>
+                                <constraint firstAttribute="width" constant="260" id="Hh2-fu-S1j"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
+                            <color key="textColor" red="0.070588235294117646" green="0.34901960784313724" blue="0.58039215686274503" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="G0O-xY-kQY">
+                            <rect key="frame" x="0.0" y="43" width="375" height="172"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="172" id="qbg-dV-FmT"/>
+                            </constraints>
+                        </tableView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="215" id="DLE-aJ-8i0"/>
+                        <constraint firstItem="GAB-Lu-4bk" firstAttribute="leading" secondItem="K8R-QX-QFw" secondAttribute="leading" constant="22" id="Seg-Ed-KED"/>
+                        <constraint firstItem="G0O-xY-kQY" firstAttribute="top" secondItem="GAB-Lu-4bk" secondAttribute="bottom" constant="6" id="XlS-Bv-yEo"/>
+                        <constraint firstAttribute="trailing" secondItem="G0O-xY-kQY" secondAttribute="trailing" id="eiw-iV-Z25"/>
+                        <constraint firstAttribute="bottom" secondItem="G0O-xY-kQY" secondAttribute="bottom" id="ffR-Zo-7Qg"/>
+                        <constraint firstItem="G0O-xY-kQY" firstAttribute="leading" secondItem="K8R-QX-QFw" secondAttribute="leading" id="wPL-Cg-trG"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="K8R-QX-QFw" secondAttribute="bottom" constant="-215" id="INi-wk-Q3h"/>
+                <constraint firstItem="K8R-QX-QFw" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lVU-8C-YmE"/>
+                <constraint firstAttribute="trailing" secondItem="K8R-QX-QFw" secondAttribute="trailing" id="tLN-k5-vdu"/>
+            </constraints>
+            <point key="canvasLocation" x="-145.5" y="142.5"/>
+        </view>
+    </objects>
+</document>

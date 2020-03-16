@@ -1,0 +1,314 @@
+{
+    "exportFormatVersion": 2,
+    "exportTime": "2016-12-13 19:26:03",
+    "containerVersion": {
+        "path": "accounts/61353053/containers/6132655/versions/0",
+        "accountId": "61353053",
+        "containerId": "6132655",
+        "containerVersionId": "0",
+        "container": {
+            "path": "accounts/61353053/containers/6132655",
+            "accountId": "61353053",
+            "containerId": "6132655",
+            "name": "FL - Hybrid - Android Native",
+            "publicId": "GTM-MMZ4FVG",
+            "usageContext": [
+                "ANDROID"
+            ],
+            "fingerprint": "1481657139181",
+            "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/61353053/containers/6132655/workspaces?apiLink=container"
+        },
+        "tag": [
+            {
+                "accountId": "61353053",
+                "containerId": "6132655",
+                "tagId": "2",
+                "name": "DEBUG Tag",
+                "type": "ua",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "exceptionDescription",
+                        "value": "debug - any event"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackType",
+                        "value": "TRACK_EXCEPTION"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "collectAdid",
+                        "value": "false"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "exceptionFatal",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackingId",
+                        "value": "{{GA - Config - Property ID}}"
+                    }
+                ],
+                "fingerprint": "1481657020693",
+                "firingTriggerId": [
+                    "2147479554"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT"
+            },
+            {
+                "accountId": "61353053",
+                "containerId": "6132655",
+                "tagId": "3",
+                "name": "GA - Generic Event",
+                "type": "ua",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "nonInteraction",
+                        "value": "true"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventCategory",
+                        "value": "{{DL - eventCategory}}"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackType",
+                        "value": "TRACK_EVENT"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "collectAdid",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventAction",
+                        "value": "{{DL - eventAction}}"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventLabel",
+                        "value": "{{DL - eventLabel}}"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "enableEcommerce",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackingId",
+                        "value": "{{GA - Config - Property ID}}"
+                    }
+                ],
+                "fingerprint": "1481657109517",
+                "firingTriggerId": [
+                    "3"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT"
+            },
+            {
+                "accountId": "61353053",
+                "containerId": "6132655",
+                "tagId": "1",
+                "name": "GA - Generic Screen View",
+                "type": "ua",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackType",
+                        "value": "TRACK_APPVIEW"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "collectAdid",
+                        "value": "false"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "enableEcommerce",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackingId",
+                        "value": "{{GA - Config - Property ID}}"
+                    }
+                ],
+                "fingerprint": "1481656995981",
+                "firingTriggerId": [
+                    "2"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT"
+            }
+        ],
+        "trigger": [
+            {
+                "accountId": "61353053",
+                "containerId": "6132655",
+                "triggerId": "3",
+                "name": "Event - trigger-ga-event",
+                "type": "ALWAYS",
+                "filter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{Event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "trigger-ga-event"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1481657105012"
+            },
+            {
+                "accountId": "61353053",
+                "containerId": "6132655",
+                "triggerId": "2",
+                "name": "Event - virtual-pageview",
+                "type": "ALWAYS",
+                "filter": [
+                    {
+                        "type": "EQUALS",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{Event}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "virtual-pageview"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1481656892252"
+            }
+        ],
+        "variable": [
+            {
+                "accountId": "61353053",
+                "containerId": "6132655",
+                "variableId": "3",
+                "name": "DL - eventAction",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "eventAction"
+                    }
+                ],
+                "fingerprint": "1481657067371"
+            },
+            {
+                "accountId": "61353053",
+                "containerId": "6132655",
+                "variableId": "2",
+                "name": "DL - eventCategory",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "eventCategory"
+                    }
+                ],
+                "fingerprint": "1481657052715"
+            },
+            {
+                "accountId": "61353053",
+                "containerId": "6132655",
+                "variableId": "4",
+                "name": "DL - eventLabel",
+                "type": "v",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "setDefaultValue",
+                        "value": "false"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "name",
+                        "value": "eventLabel"
+                    }
+                ],
+                "fingerprint": "1481657080605"
+            },
+            {
+                "accountId": "61353053",
+                "containerId": "6132655",
+                "variableId": "1",
+                "name": "GA - Config - Property ID",
+                "type": "c",
+                "parameter": [
+                    {
+                        "type": "TEMPLATE",
+                        "key": "value",
+                        "value": "UA-1002630-24"
+                    }
+                ],
+                "fingerprint": "1481656939518"
+            }
+        ],
+        "builtInVariable": [
+            {
+                "accountId": "61353053",
+                "containerId": "6132655",
+                "type": "EVENT",
+                "name": "Event"
+            },
+            {
+                "accountId": "61353053",
+                "containerId": "6132655",
+                "type": "APP_ID",
+                "name": "App ID"
+            },
+            {
+                "accountId": "61353053",
+                "containerId": "6132655",
+                "type": "APP_NAME",
+                "name": "App Name"
+            },
+            {
+                "accountId": "61353053",
+                "containerId": "6132655",
+                "type": "APP_VERSION_CODE",
+                "name": "App Version Code"
+            },
+            {
+                "accountId": "61353053",
+                "containerId": "6132655",
+                "type": "APP_VERSION_NAME",
+                "name": "App Version Name"
+            }
+        ],
+        "fingerprint": "0",
+        "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/61353053/containers/6132655/versions/0?apiLink=version"
+    }
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Create new list"
+        android:background="#005695"
+        android:textColor="#ffffff"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:id="@+id/create_header"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:hint="Enter your list name"
+        android:id="@+id/create_list"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:layout_marginTop="20dp"
+        android:background="#005695"
+        android:textColor="#ffffff"
+        android:textAllCaps="true"
+        android:textStyle="bold"
+        android:id="@+id/ok_create_footer"/>
+
+</LinearLayout>

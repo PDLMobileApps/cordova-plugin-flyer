@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+xmlns:android="http://schemas.android.com/apk/res/android"
+           id="cordova-plugin-flyer"
+      version="1.0.0">
+    <name>Flyer</name>
+    <description>Flyer Plugin</description>
+    <!-- iOS -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+             <feature name="FlyerViewController">
+                 <param name="ios-package" value="FlyerViewController" />
+             </feature>
+             <feature name="Constants">
+                 <param name="ios-package" value="Constants" />
+             </feature>
+         </config-file>
+
+         <header-file src="src/ios/CommonCrypto.h" />
+         <source-file src="src/ios/CommonCrypto.m" />
+         <header-file src="src/ios/Flyer-Bridging-Header.h" />
+         <header-file src="src/ios/CloseWebViewSingleton.h" />
+         <source-file src="src/ios/CloseWebViewSingleton.m" />
+         
+         <source-file src="src/ios/Constants.swift" />
+         <source-file src="src/ios/FlyerViewController.swift" />
+         <source-file src="src/ios/FlyerViewController.xib" />
+
+         <header-file src="src/ios/FTIndicator/FTIndicator.h" />
+         <source-file src="src/ios/FTIndicator/FTIndicator.m" />
+         
+         <header-file src="src/ios/FTIndicator/FTNotificationIndicator/FTNotificationIndicator.h" />
+         <source-file src="src/ios/FTIndicator/FTNotificationIndicator/FTNotificationIndicator.m" />
+         
+         <header-file src="src/ios/FTIndicator/FTProgressIndicator/FTProgressIndicator.h" />
+         <source-file src="src/ios/FTIndicator/FTProgressIndicator/FTProgressIndicator.m" />
+
+         <header-file src="src/ios/FTIndicator/FTToastIndicator/FTToastIndicator.h" />
+         <source-file src="src/ios/FTIndicator/FTToastIndicator/FTToastIndicator.m" />
+         
+         <header-file src="src/ios/ZHPopupView/UIColor+HexString.h" />
+         <source-file src="src/ios/ZHPopupView/UIColor+HexString.m" />
+         <header-file src="src/ios/ZHPopupView/UIImageEffects.h" />
+         <source-file src="src/ios/ZHPopupView/UIImageEffects.m" />
+         <header-file src="src/ios/ZHPopupView/UIView+DropShadow.h" />
+         <source-file src="src/ios/ZHPopupView/UIView+DropShadow.m" />
+         <header-file src="src/ios/ZHPopupView/ZHPopupView.h" />
+         <source-file src="src/ios/ZHPopupView/ZHPopupView.m" />
+         <header-file src="src/ios/HMSegmentedControl/HMSegmentedControl.h" />
+         <source-file src="src/ios/HMSegmentedControl/HMSegmentedControl.m" />
+         
+         <resource-file src="src/ios/Images/badge.png" />
+         <resource-file src="src/ios/Images/checkmark.png" />
+         <resource-file src="src/ios/Images/checkmark@2x.png" />
+         <resource-file src="src/ios/Images/checkmark@3x.png" />
+         <resource-file src="src/ios/Images/cross.png" />
+         <resource-file src="src/ios/Images/cross@2x.png" />
+         <resource-file src="src/ios/Images/cross@3x.png" />
+         <resource-file src="src/ios/Images/info.png" />
+
+         <framework src="src/ios/FlyerKit.framework" custom ="true" weak = "false"/>
+    </platform>
+	
+	<platform name="android">
+        <config-file target="config.xml" parent="/*">
+             <feature name="FlyerViewController">
+                 <param name="android-package" value="com.foodlion.mobile.FlyerActivity" />
+             </feature>
+             <feature name="Constants">
+                 <param name="android-package" value="com.foodlion.mobile.Utils" />
+             </feature>
+         </config-file>
+         
+		 <source-file src="src/android/activity/FlyerActivity.java" target-dir="src/com/foodlion/mobile" />
+		 <source-file src="src/android/activity/Utils.java" target-dir="src/com/foodlion/mobile" />
+		 <source-file src="src/android/activity/ContainerHolderSingleton.java" target-dir="src/com/foodlion/mobile" />
+		 
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+        <uses-permission android:name="android.permission.INTERNET" />
+        </config-file>
+            
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+            <activity android:name=".FlyerActivity" android:theme="@style/Theme.AppCompat.Light" android:screenOrientation="portrait"/>
+        </config-file>
+		
+		<framework src="src/android/flyerbuild.gradle" custom="true" type="gradleReference" />
+
+		<source-file src="src/android/libs/flyerkit-2.1.1.aar" target-dir="libs/" />
+		
+		<resource-file src="src/android/GTM-DEFAULT_ANDROID.json" target="GTM-DEFAULT_ANDROID.json" />
+		<resource-file src="src/android/raw/gtm_android_binary_default" target="res/raw/gtm_android_binary_default"/>
+ 
+        <resource-file src="src/android/images/badge.png" target="res/drawable-hdpi/badge.png"/>
+        <resource-file src="src/android/images/checkmark.png" target="res/drawable-hdpi/checkmark.png"/>
+        <resource-file src="src/android/images/cross.png" target="res/drawable-hdpi/cross.png"/>
+		
+		<resource-file src="src/android/layout/activity_flyer.xml" target="res/layout/activity_flyer.xml"/>
+        <resource-file src="src/android/layout/create_popup.xml" target="res/layout/create_popup.xml"/>
+        <resource-file src="src/android/layout/guest_popup.xml" target="res/layout/guest_popup.xml"/>
+		<resource-file src="src/android/layout/popup.xml" target="res/layout/popup.xml"/>
+		
+		<resource-file src="src/android/menu/flyer_menu_main.xml" target="res/menu/flyer_menu_main.xml" />
+		<resource-file src="src/android/values/flyerstrings.xml" target="res/values/flyer_strings.xml" />
+
+    </platform>
+	
+</plugin>

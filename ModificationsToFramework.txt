@@ -1,0 +1,4 @@
+Modifications to framework:
+
+- Replaced the FlyerKit sym link inside the src/ios/FlyerKit.framework with exec file from src/ios/FlyerKit.framework/Versions/Current folder.
+- Deleted the FlyerKit.framework/Versions folder.
