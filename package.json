@@ -1,0 +1,14 @@
+{
+  "name": "cordova-plugin-flyer",
+  "version": "1.0.0",
+  "description": "Flyer plugin",
+  "cordova": {
+    "id": "cordova-plugin-flyer",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "keywords": [
+  ],
+  "author": "Prasanna Poonacha"  
+}
