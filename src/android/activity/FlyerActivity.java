@@ -6,14 +6,14 @@ import android.app.ProgressDialog;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -53,8 +53,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -857,25 +861,61 @@ public class FlyerActivity extends AppCompatActivity {
             String appId = strings[7];
             String selectedItem = strings[8];
             String API_BASE_URL = strings[9];
-            HttpURLConnection _connection = null;
 
+            URL url = null;
+            String itemId1 = UUID.randomUUID().toString();
+            final String Msg1 = "user/lists/" + selectedItem + "/items/" + itemId1 + "?t=" + accessTokenn;// + "&a=" + appId;
+            String ADDINSHOPPINGLIST = API_BASE_URL + selectedItem + "/items/" + itemId1 + "?t=" + accessTokenn;// + "&a=" + appId;
             try {
-                String itemId1 = UUID.randomUUID().toString();
-                final String Msg1 = "user/lists/" + selectedItem + "/items/" + itemId1 + "?t=" + accessTokenn;// + "&a=" + appId;
-                String ADDINSHOPPINGLIST = API_BASE_URL + selectedItem + "/items/" + itemId1 + "?t=" + accessTokenn;// + "&a=" + appId;
+                url = new URL(ADDINSHOPPINGLIST);
+            } catch (MalformedURLException exception) {
+                exception.printStackTrace();
+                return false;
+            }
 
-                URL url = new URL(ADDINSHOPPINGLIST);
-
+            HttpURLConnection _connection = null;
+            OutputStreamWriter osw = null;
+            try {
                 _connection = (HttpURLConnection) url.openConnection();
                 _connection.setRequestMethod("PUT");
-                _connection.setRequestProperty("Content-Type", "application/json");
+                _connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 _connection.setRequestProperty("Accept", "application/json");
                 _connection.setRequestProperty("client_id", headerMulesoftClientIdFromhybrid);
                 _connection.setRequestProperty("client_secret", headerMulesoftClientSecretFromhybrid);
                 _connection.setDoOutput(true);
                 Log.v("PARAMS" , _connection.toString());
+
+
+                osw = new OutputStreamWriter(_connection.getOutputStream());
+
+                Log.v("UPC Len: ",String.valueOf( productUpc.length()) );
+
+
+                String payload = String.format("{" +
+                        "\"product\":{" +
+                        "\"upc\":\"" + productUpc + "\"," +
+                        "\"productName\":\" " + productName +  "\"" +
+                        "}," +
+                        "\"customAttributes\":{" +
+                        "\"category\":\" " +categoryType + "\"," +
+                        "\"itemSource\":\"WEEKLY_SPECIAL\"" +
+                        "}," +
+                        "\"itemSource\":\"WEEKLY_SPECIAL\"," +
+                        "\"itemId\":\"" + itemId1 + "\"," +
+                        "\"itemName\":\""+ productName + "\"," +
+                        "\"itemQuantity\":1" +
+                        "}" );
+               // Log.v("PAYLOAD: ",payload);
+
+                osw.write(payload);
+
+                osw.flush();
+                osw.close();
+
+                Log.v("RESPONSE CODE: ", String.valueOf(_connection.getResponseCode()) );
                 
-                if(_connection.getResponseCode() == HttpURLConnection.HTTP_OK){
+                if(_connection.getResponseCode() == HttpURLConnection.HTTP_OK ||
+                        _connection.getResponseCode() == HttpURLConnection.HTTP_CREATED){
                     Log.v("ADDED TO LIST", "Add to list success.");
                     // server_response = readStream(_connection.getInputStream());
                     Log.v("ADDED TO LIST SUCCESS", _connection.getResponseMessage() );
@@ -889,15 +929,14 @@ public class FlyerActivity extends AppCompatActivity {
                 }
 
 
-            } catch (MalformedURLException e){
-                 //bad  URL, tell the user
-                e.printStackTrace();
             } catch (IOException e) {
                 //network error/ tell the user
                 Log.v("ADDED TO LIST ERROR", "Network Error");
                 e.printStackTrace();
             } finally  {
-                _connection.disconnect();
+                if (_connection != null) {
+                    _connection.disconnect();
+                }
             }           
     
 
@@ -948,7 +987,10 @@ public class FlyerActivity extends AppCompatActivity {
                 showErrorDialog("FAILED TO ADD ITEM","WE ARE UNABLE TO ADD YOUR ITEM TO THE LIST. PLEASE TRY AGAIN LATER.");
             }
         }
+
     }
+
+
 
     private class PostClass extends AsyncTask<String, Void, Void> {
         private ProgressDialog pd;
