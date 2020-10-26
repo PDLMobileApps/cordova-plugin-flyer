@@ -888,26 +888,39 @@ public class FlyerActivity extends AppCompatActivity {
 
                 osw = new OutputStreamWriter(_connection.getOutputStream());
 
-                Log.v("UPC Len: ",String.valueOf( productUpc.length()) );
+                
+                JSONObject product = new JSONObject();
+                try {
+                    product.put("upc",productUpc);
+                    product.put("productName",productName);
+                } catch (JSONException e) {
+                    Log.e("JSONObjectException[ERROR]: ",e.toString());
+                    e.printStackTrace();
+                }
 
+                JSONObject customAttributes = new JSONObject();
+                try {
+                    customAttributes.put("category",categoryType);
+                    customAttributes.put("itemSource","WEEKLY_SPECIAL");
+                } catch (Exception e) {
+                    Log.e("JSONObjectException[ERROR]: ",e.toString());
+                    e.printStackTrace();
+                }
 
-                String payload = String.format("{" +
-                        "\"product\":{" +
-                        "\"upc\":\"" + productUpc + "\"," +
-                        "\"productName\":\" " + productName +  "\"" +
-                        "}," +
-                        "\"customAttributes\":{" +
-                        "\"category\":\" " +categoryType + "\"," +
-                        "\"itemSource\":\"WEEKLY_SPECIAL\"" +
-                        "}," +
-                        "\"itemSource\":\"WEEKLY_SPECIAL\"," +
-                        "\"itemId\":\"" + itemId1 + "\"," +
-                        "\"itemName\":\""+ productName + "\"," +
-                        "\"itemQuantity\":1" +
-                        "}" );
-               // Log.v("PAYLOAD: ",payload);
+                JSONObject payload = new JSONObject();
+                try {
+                    payload.put("product",product);
+                    payload.put("customAttributes",customAttributes);
+                    payload.put("itemSource","WEEKLY_SPECIAL");
+                    payload.put("itemId",itemId1);
+                    payload.put("itemName",productName);
+                    payload.put("itemQuantity","1");
+                } catch (Exception e) {
+                    Log.e("JSONObjectException[ERROR]: ",e.toString());
+                    e.printStackTrace();
+                }
 
-                osw.write(payload);
+                osw.write(payload.toString());
 
                 osw.flush();
                 osw.close();
