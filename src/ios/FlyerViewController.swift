@@ -49,6 +49,10 @@ let urlSession = {
         delegateQueue: OperationQueue.main)
 }()
 
+@objc protocol FlyerViewControllerDelegate : NSObjectProtocol{
+    func viewControllerDismissed()
+}
+
 @objc(FlyerViewController)
 class FlyerViewController: UIViewController, WFKFlyerViewDelegate, TAGContainerOpenerNotifier {
     
@@ -62,10 +66,9 @@ class FlyerViewController: UIViewController, WFKFlyerViewDelegate, TAGContainerO
     private var clientId : String?
     private var dataLayer: TAGDataLayer?
     private var dataLayerFlyerItemID: Int = 0
-
     private var didFinishedPanning: Bool = true
     private var isFlyerLoaded: Bool = false
-
+    @objc public var delegate: FlyerViewControllerDelegate?
     
     // MARK: API Properties
     var APPID: String?
@@ -222,20 +225,19 @@ class FlyerViewController: UIViewController, WFKFlyerViewDelegate, TAGContainerO
         flyerView!.translatesAutoresizingMaskIntoConstraints = false
         // flyerView!.delegate = self
         view.addSubview(flyerView!)
-        
+        view.backgroundColor = AppConstants.baseColor
         // Adding a navigation bar
         title = "Weekly Special Print View"
         let navigationBarAppearace = UINavigationBar.appearance()
         // change navigation item title color
         navigationBarAppearace.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
+
         var navigationBar = UINavigationBar()
-        if UIDevice.current.iPhoneX{
-            navigationBar = UINavigationBar(frame: CGRect(x: 0.0, y: 40.0, width: view.frame.size.width, height: 44))
-        }else{
-            navigationBar = UINavigationBar(frame: CGRect(x: 0.0, y: 20.0, width: view.frame.size.width, height: 44))
-        }
+        navigationBar = UINavigationBar(frame: CGRect(x: 0.0, y: UIApplication.shared.statusBarFrame.height, width: view.frame.size.width, height: 44))
         navigationBar.barTintColor = AppConstants.baseColor
+        navigationBar.isTranslucent = false
         navigationBar.tintColor = UIColor.white
+        navigationBar.backgroundColor = AppConstants.baseColor
         navigationBar.barStyle = .default
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "cross"), style: .done, target: self, action: #selector(back(sender:)))
         navigationBar.pushItem(navigationItem, animated: true)
@@ -281,6 +283,7 @@ class FlyerViewController: UIViewController, WFKFlyerViewDelegate, TAGContainerO
             NSLayoutConstraint.constraints(withVisualFormat: "|[flyerView]|",
                                            options: [], metrics: nil, views: ["flyerView": flyerView!]))
     }
+
     
     
     //AppConstants.DEFAULT_FLYER_ID
@@ -611,15 +614,17 @@ class FlyerViewController: UIViewController, WFKFlyerViewDelegate, TAGContainerO
     }
 
     private func gtmDataLayerPush(dataLayerObj: DataLayerModel) {
-        self.dataLayer?.push(["event": dataLayerObj.event,
-                            "clientId": self.clientId!,
-                            "weeklySpecialAction": dataLayerObj.weeklySpecialAction.rawValue,
-                            "flyer_type_id": "\(self.selectedFlyerTypeID)",
-                            "flyer_run_id": "\(self.selectedFlyerRunID)",
-                            "flyer_id": "\(self.selectedFlyerID)",
+        self.dataLayer?.push([
+            "event": dataLayerObj.event,
+            "clientId": self.clientId!,
+            "weeklySpecialAction": dataLayerObj.weeklySpecialAction.rawValue,
+            "flyer_type_id": "\(self.selectedFlyerTypeID)",
+            "flyer_run_id": "\(self.selectedFlyerRunID)",
+            "flyer_id": "\(self.selectedFlyerID)",
             "store_id": self.STOREID, //?? "0001",
-                            "postal_code": "\(self.selectedFlyerPostalCode)",
-                            "item_id": dataLayerObj.item_id!])
+            "postal_code": "\(self.selectedFlyerPostalCode)",
+            "item_id": dataLayerObj.item_id!
+        ])
     }
 
 
@@ -627,15 +632,20 @@ class FlyerViewController: UIViewController, WFKFlyerViewDelegate, TAGContainerO
     @objc func back(sender: UIButton) {
         dismissNativePage()
     }
+
     func dismissNativePage() {
-        CloseWebViewSingleton.closeWebView(dict)
+        self.dismiss(animated: false, completion: nil);
         
         if self.flyerView != nil {
             flyerView!.removeConstraints(flyerView!.constraints)
             flyerView = nil
         }
-        view.subviews.forEach({ $0.removeFromSuperview() }) // this gets things done
+        view.subviews.forEach({ 
+            $0.removeFromSuperview() 
+        }) 
         view = nil
+        
+        delegate?.viewControllerDismissed()
     }
     
     // MARK: - API Calls

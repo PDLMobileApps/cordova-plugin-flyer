@@ -5,9 +5,6 @@
 //#import <Cordova/CDVViewController.h>
 #import "FlyerKit/FlyerKit.h"
 #import "FlyerKit/WFKFlyerView.h"
-#import <CommonCrypto/CommonCrypto.h>
-#import "CommonCrypto.h"
-#import "CloseWebViewSingleton.h"
 
 #import "FTIndicator.h"
 #import "FTToastIndicator.h"

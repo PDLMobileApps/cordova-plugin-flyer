@@ -125,6 +125,7 @@ interface PanEventListener {
 public class FlyerActivity extends AppCompatActivity {
 
     private String LOGTAG = this.getClass().getSimpleName();
+    private final int FLYER_VIEW_RESULT_CODE = 99;
     Utils utils;
     private ActivityFlyerBinding mBinding;
     private RequestQueue mRequestQueue;
@@ -767,6 +768,8 @@ public class FlyerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
+                Intent returnIntent = new Intent();
+                setResult(FLYER_VIEW_RESULT_CODE,returnIntent);
                 finish();
                 return true;
             default:
