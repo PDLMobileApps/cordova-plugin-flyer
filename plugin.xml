@@ -21,7 +21,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 xmlns:android="http://schemas.android.com/apk/res/android"
            id="cordova-plugin-flyer"
-      version="2.0.0">
+      version="2.0.1">
     <name>Flyer</name>
     <description>Flyer Plugin</description>
     <js-module src="src/www/flyer.js" name="Flyer">
