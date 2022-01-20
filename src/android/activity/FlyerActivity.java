@@ -255,6 +255,12 @@ public class FlyerActivity extends AppCompatActivity {
         // initialize GTM
         final TagManager tagManger = TagManager.getInstance(FlyerActivity.this);
 
+        flyerProgressDialog= new ProgressDialog(FlyerActivity.this);
+        flyerProgressDialog.setMessage("Loading");
+        flyerProgressDialog.setCancelable(false);
+        flyerProgressDialog.show();
+
+
         PendingResult<ContainerHolder> pending = tagManger.loadContainerPreferNonDefault(
                 CONTAINER_ID,R.raw.gtm_android_binary_default );
         pending.setResultCallback(new ResultCallback<ContainerHolder>() {
@@ -408,11 +414,13 @@ public class FlyerActivity extends AppCompatActivity {
             public void onFlyerLoaded(FlyerView flyerView) {
                 System.out.println("Flayer loaded");
                 isFlyerLoaded=true;
+                flyerProgressDialog.dismiss();
             }
 
             @Override
             public void onFlyerLoadError(FlyerView flyerView, Exception e) {
                 System.out.println("Flyer Load Error");
+                flyerProgressDialog.dismiss();
             }
         });
     }
@@ -688,10 +696,6 @@ public class FlyerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        flyerProgressDialog= new ProgressDialog(FlyerActivity.this);
-        flyerProgressDialog.setMessage("Loading");
-        flyerProgressDialog.setCancelable(false);
-        flyerProgressDialog.show();
 
         String urlFlyer = rootUrl + "flyerkit/" + apiVersion + "/publications/" +
                 merchantIdentifier + "?store_code=" + mStoreId + "&locale=" +
@@ -735,7 +739,7 @@ public class FlyerActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                    flyerProgressDialog.cancel();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -744,7 +748,7 @@ public class FlyerActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                flyerProgressDialog.dismiss();
+
                 VolleyLog.e("JsonArray Error=" + error);
 
                 if (error instanceof TimeoutError || error instanceof NoConnectionError) {
