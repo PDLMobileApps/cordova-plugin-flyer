@@ -170,6 +170,8 @@ public class FlyerActivity extends AppCompatActivity {
     boolean isPanning=false;
     boolean didFinishedPanning=true;
     boolean isFlyerLoaded=false;
+    public static final String REQ_TAG = "WEEKLYFLYER";
+    RequestQueue.RequestFinishedListener myRequestListener;
 
     /*MD5:99:6A:8B:C5:97:44:90:6A:FF:3C:7C:53:06:07:54:72
       SHA1: D3:DC:7D:2D:A0:17:67:98:30:0D:D1:C7:11:96:A8:35:80:E9:0F:4C
@@ -255,12 +257,6 @@ public class FlyerActivity extends AppCompatActivity {
         // initialize GTM
         final TagManager tagManger = TagManager.getInstance(FlyerActivity.this);
 
-        flyerProgressDialog= new ProgressDialog(FlyerActivity.this);
-        flyerProgressDialog.setMessage("Loading");
-        flyerProgressDialog.setCancelable(false);
-        flyerProgressDialog.show();
-
-
         PendingResult<ContainerHolder> pending = tagManger.loadContainerPreferNonDefault(
                 CONTAINER_ID,R.raw.gtm_android_binary_default );
         pending.setResultCallback(new ResultCallback<ContainerHolder>() {
@@ -308,10 +304,28 @@ public class FlyerActivity extends AppCompatActivity {
             System.out.println("Added default storeId 0001 to this app..");
         }
 
+        
+        myRequestListener = new RequestQueue.RequestFinishedListener() {
+
+            public void onRequestFinished(Request request) {
+                if(request != null && String.valueOf(request.getTag()) == REQ_TAG) {
+                    if (flyerProgressDialog.isShowing()){
+                        flyerProgressDialog.dismiss();
+                    }
+
+                }
+            }
+            
+        };
+
         mRequestQueue = Volley.newRequestQueue(this);
+        mRequestQueue.addRequestFinishedListener(myRequestListener);
+
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_flyer);
 
         getSupportActionBar().setTitle("Weekly Flyer Print View");
+
+        loadFlyer();
 
         mBinding.flyerView.setFlyerViewListener(new FlyerView.FlyerViewListener() {
             @Override
@@ -414,15 +428,22 @@ public class FlyerActivity extends AppCompatActivity {
             public void onFlyerLoaded(FlyerView flyerView) {
                 System.out.println("Flayer loaded");
                 isFlyerLoaded=true;
-                flyerProgressDialog.dismiss();
             }
 
             @Override
             public void onFlyerLoadError(FlyerView flyerView, Exception e) {
                 System.out.println("Flyer Load Error");
-                flyerProgressDialog.dismiss();
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mRequestQueue != null) {
+            mRequestQueue.removeRequestFinishedListener(myRequestListener);
+        }
+
     }
 
 
@@ -618,9 +639,6 @@ public class FlyerActivity extends AppCompatActivity {
 
     private void fetchFlyers(){
         mBinding.flyerView.setFlyerId(defaultFlyerId, accessToken, rootUrl, apiVersion);
-        if (flyerProgressDialog.isShowing()){
-            flyerProgressDialog.dismiss();
-        }
 
         String itemsUrl = rootUrl + "flyerkit/" + apiVersion + "/publication/" +
                 defaultFlyerId + "/products?access_token=" + accessToken + "&display_type=1,5,3,25,7,15";
@@ -630,7 +648,7 @@ public class FlyerActivity extends AppCompatActivity {
                 new JsonArrayRequest(itemsUrl, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        //System.out.println("Test response---> " + response.toString());
+                        // Log.d("FetchFlyers: ","JsonArray Response="+response.toString());
                         mFlyerItems = response;
                         System.out.println("mFlyerItems.length()==" + mFlyerItems.length());
                         List<FlyerView.TapAnnotation> tapAnnotations = new ArrayList<FlyerView.TapAnnotation>();
@@ -689,13 +707,17 @@ public class FlyerActivity extends AppCompatActivity {
 
                     }
                 });
+        itemsRequest.setTag(REQ_TAG);
         mRequestQueue.add(itemsRequest);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
+    private void loadFlyer() {
+
+        flyerProgressDialog= new ProgressDialog(FlyerActivity.this);
+        flyerProgressDialog.setMessage("Loading");
+        flyerProgressDialog.setCancelable(false);
+        flyerProgressDialog.show();
 
         String urlFlyer = rootUrl + "flyerkit/" + apiVersion + "/publications/" +
                 merchantIdentifier + "?store_code=" + mStoreId + "&locale=" +
@@ -704,7 +726,7 @@ public class FlyerActivity extends AppCompatActivity {
         JsonArrayRequest flipRequest = new JsonArrayRequest(urlFlyer, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                System.out.println("JsonArray Response="+response.toString());
+                // Log.d("LoadFlyer: ","JsonArray Response="+response.toString());
                 try {
                     for (int i=0; i < response.length(); i++) {
                         JSONObject flipJsonObj = new JSONObject();
@@ -1125,7 +1147,8 @@ public class FlyerActivity extends AppCompatActivity {
             Log.i("Weekly Flyer Print View", "Custom function call tag :" + tagName + " is fired.");
         }
     }
-        private class ProcessPanning extends AsyncTask<Boolean, Void, Boolean> {
+    
+    private class ProcessPanning extends AsyncTask<Boolean, Void, Boolean> {
         private PanEventListener mCallBack;
         public Exception mException;
 
