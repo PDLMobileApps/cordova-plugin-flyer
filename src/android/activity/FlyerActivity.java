@@ -451,10 +451,9 @@ public class FlyerActivity extends AppCompatActivity {
                                                final String hmacPublicKey, final String oauthSignatureMethod,
                                                final String oauthVersion, final String headerMulesoftClientIdFromhybrid, final String headerMulesoftClientSecretFromhybrid,
                                                final String appId, final String accessTokenn, final String API_BASE_URL) {
-        final ProgressDialog pd;
-        pd= new ProgressDialog(FlyerActivity.this);
-        pd.setMessage("Loading");
-        pd.show();
+        if (!flyerProgressDialog.isShowing()){
+            flyerProgressDialog.show();
+        }
 
         final String Msg = "user/lists?t=" + accessTokenn;
 
@@ -462,10 +461,15 @@ public class FlyerActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+
+                        if (flyerProgressDialog.isShowing()){
+                            flyerProgressDialog.dismiss();
+                        }
+                        
                         try {
                             VolleyLog.v("Response:%n %s", response.toString(4));
-                            pd.dismiss();
                             listNameArray.clear();
+                            listNameId.clear();
                             JSONArray jArray1 = response.getJSONArray("lists");
                             for (int i = 0; i < jArray1.length(); i++) {
                                 JSONObject jObject = (JSONObject) jArray1.getJSONObject(i);
@@ -487,7 +491,7 @@ public class FlyerActivity extends AppCompatActivity {
                                 new AddItemClass().execute(hmacPrivateKey, hmacPublicKey, oauthSignatureMethod, oauthVersion,
                                          headerMulesoftClientIdFromhybrid, headerMulesoftClientSecretFromhybrid, accessTokenn, appId, selectedItem,API_BASE_URL);
 
-                            } else if (listNameArray.size() >1 && listNameId.size() >1){
+                            } else {
                                 AlertDialog.Builder alertDioalog = new AlertDialog.Builder(FlyerActivity.this);
                                 alertDioalog.setTitle("Select a List:");
 
@@ -518,12 +522,9 @@ public class FlyerActivity extends AppCompatActivity {
                                                     }
                                                     if(!isListfound)
                                                     {
+                                                        addItemDialog.dismiss();
                                                         new PostClass().execute(hmacPrivateKey, hmacPublicKey, oauthSignatureMethod,
                                                                 oauthVersion ,headerMulesoftClientIdFromhybrid, headerMulesoftClientSecretFromhybrid, accessTokenn, appId, newListNameStr,API_BASE_URL);
-                                                        addItemDialog.dismiss();
-                                                        gettingShoppingListFromServer(GETALLSHOPPINGLIST, hmacPrivateKeyFromhybrid, hmacPublicKeyFromhybrid,
-                                                                oauthSignatureMethodFromhybrid, oauthVersionFromhybrid, headerMulesoftClientIdFromhybrid, headerMulesoftClientSecretFromhybrid, appIdFromhybrid,
-                                                                accessTokenForAPI,API_BASE_URL);
                                                     }
                                                     else
                                                     {
@@ -590,7 +591,9 @@ public class FlyerActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        pd.dismiss();
+                        if (flyerProgressDialog.isShowing()){
+                            flyerProgressDialog.dismiss();
+                        }
                         VolleyLog.e("Error: not getting Item Id", error.getMessage());
 
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
@@ -869,13 +872,12 @@ public class FlyerActivity extends AppCompatActivity {
 
 
     private class AddItemClass extends AsyncTask<String, Void, Boolean> {
-        private ProgressDialog pd;
 
         @Override
         protected void onPreExecute() {
-            pd= new ProgressDialog(FlyerActivity.this);
-            pd.setMessage("Loading");
-            pd.show();
+            if (!flyerProgressDialog.isShowing()){
+                flyerProgressDialog.show();
+            }
         }
 
         @Override
@@ -980,7 +982,9 @@ public class FlyerActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
-            pd.dismiss();
+            if (flyerProgressDialog.isShowing()){
+                flyerProgressDialog.dismiss();
+            }
             Log.e("Added to List?", success?"YES":"NO");
 
             System.out.println("flyer_client_id---"+flyer_client_id);
@@ -1026,17 +1030,16 @@ public class FlyerActivity extends AppCompatActivity {
 
 
 
-    private class PostClass extends AsyncTask<String, Void, Void> {
-        private ProgressDialog pd;
+    private class PostClass extends AsyncTask<String, Void, Boolean> {
 
         protected void onPreExecute() {
-            pd= new ProgressDialog(FlyerActivity.this);
-            pd.setMessage("Loading");
-            pd.show();
+            if (!flyerProgressDialog.isShowing()){
+                flyerProgressDialog.show();
+            }
         }
 
         @Override
-        protected Void doInBackground(String... params) {
+        protected Boolean doInBackground(String... params) {
 
             String accessTokenn = params[6];
 
@@ -1082,7 +1085,6 @@ public class FlyerActivity extends AppCompatActivity {
                     Intent addedToList = new Intent();
                     addedToList.putExtra("addedToList", true);
                     setResult(RESULT_OK,addedToList);
-                    pd.dismiss();
 
                 } catch (MalformedURLException e) {
                     // TODO Auto-generated catch block
@@ -1099,9 +1101,14 @@ public class FlyerActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            pd.dismiss();
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            if (flyerProgressDialog.isShowing()){
+                flyerProgressDialog.dismiss();
+            }
+            gettingShoppingListFromServer(GETALLSHOPPINGLIST, hmacPrivateKeyFromhybrid, hmacPublicKeyFromhybrid,
+                                                                oauthSignatureMethodFromhybrid, oauthVersionFromhybrid, headerMulesoftClientIdFromhybrid, headerMulesoftClientSecretFromhybrid, appIdFromhybrid,
+                                                                accessTokenForAPI,API_BASE_URL);
 
         }
 
