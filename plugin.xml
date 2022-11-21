@@ -111,7 +111,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
             
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <uses-library android:name="org.apache.http.legacy" android:required="false"/>
-            <activity android:name=".FlyerActivity" android:theme="@style/Theme.AppCompat.Light" android:screenOrientation="portrait">
+            <activity android:name=".FlyerActivity" android:theme="@style/Theme.AppCompat.Light" android:screenOrientation="portrait" android:exported="false">
                 <intent-filter>
                     <action android:name="com.foodlion.mobile.FlyerActivity" />
                     <category android:name="android.intent.category.DEFAULT" />
